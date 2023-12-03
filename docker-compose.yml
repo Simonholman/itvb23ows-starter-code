@@ -14,7 +14,7 @@ services:
     command: ["php", "-S", "0.0.0.0:8000"]
 
   mysql-db:
-    image: mysql:8.0
+    image: mysql:5.7
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: true
       MYSQL_ROOT_PASSWORD:
