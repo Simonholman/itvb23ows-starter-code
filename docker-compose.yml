@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  php-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql-db
+    networks:
+      - app-network
+    ports:
+      - "8000:8000"
+    command: ["php", "-S", "0.0.0.0:8000"]
+
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: hive
+    ports: 
+      - "33006:3306"
+    networks:
+      - app-network
+    volumes:
+      - ./hive.sql:/docker-entrypoint-initdb.d/hive.sql
+
+networks:
+  app-network:
+    
