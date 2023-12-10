@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'php:5.6-fpm' } 
+    }
 
     stages {
         // stage('Checkout') {
