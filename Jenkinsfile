@@ -2,19 +2,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Haal de broncode op uit de versiebeheer (bijv. Git)
-                checkout scm
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         // Haal de broncode op uit de versiebeheer (bijv. Git)
+        //         checkout scm
+        //     }
+        // }
 
         stage('Build') {
             steps {
                 // Bouw de Docker-image voor de PHP-applicatie
-                steps {
-                    sh 'php --version'
-                }
+                sh 'php --version'
                 // script {
                 //     docker.build('jouw-gebruikersnaam/php-app:latest')
                 // }
