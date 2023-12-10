@@ -3,6 +3,15 @@ pipeline {
         docker { image 'itvb23ows-starter-code-php-app' } 
     }
 
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building..."
+                echo "Hello World"
+                sh 'php --version'
+            }
+        }
+
     // stages {
     //     stage('Checkout') {
     //         steps {
