@@ -11,6 +11,7 @@ pipeline {
                 sh 'php --version'
             }
         }
+    }
 
     // stages {
     //     stage('Checkout') {
