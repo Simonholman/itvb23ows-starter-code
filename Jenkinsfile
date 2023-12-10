@@ -1,55 +1,24 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('docker compose build') {
-            steps {
-                sh 'docker-compose build'
-            }
-        }
-
-        stage('docker compose up') {
-            steps {
-                sh 'docker-compose up -d'
-            }
-        }
+    agent {
+        docker { image 'itvb23ows-starter-code-php-app' } 
     }
 
     // stages {
-        // stage('Checkout') {
-        //     steps {
-        //         // Haal de broncode op uit de versiebeheer (bijv. Git)
-        //         checkout scm
-        //     }
-        // }
+    //     stage('Checkout') {
+    //         steps {
+    //             checkout scm
+    //         }
+    //     }
 
-        // stage('Build') {
-        //     steps {
-        //         // Bouw de Docker-image voor de PHP-applicatie
-        //         echo 'test'
-        //         sh 'php --version'
-        //         // script {
-        //         //     docker.build('jouw-gebruikersnaam/php-app:latest')
-        //         // }
-        //     }
-        // }
+    //     stage('Build and Test PHP App') {
+    //         steps {
+    //             script {
+    //                 docker.build('itvb23ows-starter-code-php-app:latest', '-f Dockerfile .')
+    //                 docker.image('itvb23ows-starter-code-php-app:latest').run('--rm -v $PWD:/app phpunit')
+    //             }
+    //         }
+    //     }
 
-        // stage('Test') {
-        //     steps {
-        //         // Voer PHP-tests uit in de Docker-container
-        //         script {
-        //             docker.image('jouw-gebruikersnaam/php-app:latest').run('--rm -v $PWD:/app phpunit')
-        //         }
-        //     }
-        // }
-
-        // stage('Deploy') {
-        //     steps {
-        //         // Deploy de applicatie (bijvoorbeeld naar een server)
-        //         script {
-        //             // Voeg hier je deploy-stappen toe
-        //         }
-        //     }
-        // }
+    //     // Voeg meer stappen toe voor deployment, afhankelijk van je behoeften
     // }
 }
