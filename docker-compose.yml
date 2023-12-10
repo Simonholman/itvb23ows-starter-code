@@ -30,8 +30,11 @@ services:
     image: jenkins/jenkins:lts
     ports:
       - 8080:8080
+      - 2376:2376
     networks:
       - app-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   app-network:
