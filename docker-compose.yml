@@ -25,6 +25,13 @@ services:
       - app-network
     volumes:
       - ./hive.sql:/docker-entrypoint-initdb.d/hive.sql
+    
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
 
 networks:
   app-network:
