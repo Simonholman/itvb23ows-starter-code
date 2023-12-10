@@ -4,6 +4,20 @@ pipeline {
     }
 
     stages {
+        stage('docker compose build') {
+            steps {
+                sh 'docker compose build'
+            }
+        }
+
+        stage('docker compose up') {
+            steps {
+                sh 'docker compose up -d'
+            }
+        }
+    }
+
+    // stages {
         // stage('Checkout') {
         //     steps {
         //         // Haal de broncode op uit de versiebeheer (bijv. Git)
@@ -11,16 +25,16 @@ pipeline {
         //     }
         // }
 
-        stage('Build') {
-            steps {
-                // Bouw de Docker-image voor de PHP-applicatie
-                echo 'test'
-                sh 'php --version'
-                // script {
-                //     docker.build('jouw-gebruikersnaam/php-app:latest')
-                // }
-            }
-        }
+        // stage('Build') {
+        //     steps {
+        //         // Bouw de Docker-image voor de PHP-applicatie
+        //         echo 'test'
+        //         sh 'php --version'
+        //         // script {
+        //         //     docker.build('jouw-gebruikersnaam/php-app:latest')
+        //         // }
+        //     }
+        // }
 
         // stage('Test') {
         //     steps {
@@ -39,5 +53,5 @@ pipeline {
         //         }
         //     }
         // }
-    }
+    // }
 }
