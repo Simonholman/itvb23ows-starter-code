@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'php:5.6-fpm' } 
-    }
+    agent any
 
     stages {
         stage('docker compose build') {
