@@ -14,6 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Bouw de Docker-image voor de PHP-applicatie
+                echo 'test'
                 sh 'php --version'
                 // script {
                 //     docker.build('jouw-gebruikersnaam/php-app:latest')
