@@ -14,24 +14,15 @@ pipeline {
                 sh "docker-compose -f docker-compose-jenkins.yml up -d"
             }
         }
+
+        stage('Test') {
+            steps {
+                docker.image('inner-php-image:latest').inside {
+                        sh 'composer require --dev phpunit/phpunit'
+                        sh 'composer install'
+                        sh './UnitTest.php'
+                    }
+            }
+        }
     }
 }
-
-    // stages {
-    //     stage('Checkout') {
-    //         steps {
-    //             checkout scm
-    //         }
-    //     }
-
-    //     stage('Build and Test PHP App') {
-    //         steps {
-    //             script {
-    //                 docker.build('itvb23ows-starter-code-php-app:latest', '-f Dockerfile .')
-    //                 docker.image('itvb23ows-starter-code-php-app:latest').run('--rm -v $PWD:/app phpunit')
-    //             }
-    //         }
-    //     }
-
-    //     // Voeg meer stappen toe voor deployment, afhankelijk van je behoeften
-    // }

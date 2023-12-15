@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_php
+    image: inner-php-image:latest
     depends_on:
       - mysql-db
     networks:
