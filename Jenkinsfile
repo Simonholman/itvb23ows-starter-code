@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'itvb23ows-starter-code-php-app' } 
-    }
+    agent any
 
     stages {
         stage('Build') {
