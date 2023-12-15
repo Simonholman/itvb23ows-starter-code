@@ -2,14 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
-            steps {
-                echo "Building..."
-                echo "Hello World"
-                sh 'php --version'
-            }
+        stage('Clone source') {
+            checkout scm
         }
     }
+}
 
     // stages {
     //     stage('Checkout') {

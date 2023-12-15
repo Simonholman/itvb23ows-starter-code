@@ -1,0 +1,7 @@
+FROM jenkins/jenkins:lts
+
+# Kopieer de applicatiebestanden naar de container
+COPY . /
+
+# Stel de werkmap in voor PHP
+WORKDIR /

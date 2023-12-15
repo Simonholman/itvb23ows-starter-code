@@ -4,7 +4,7 @@ services:
   php-app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_php
     depends_on:
       - mysql-db
     networks:
@@ -27,14 +27,13 @@ services:
       - ./hive.sql:/docker-entrypoint-initdb.d/hive.sql
     
   jenkins:
-    image: jenkins/jenkins:lts
-    privileged: true
+    build:
+      context: .
+      dockerfile: Dockerfile_jenkins
     ports:
       - 8080:8080
     networks:
       - app-network
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   app-network:
