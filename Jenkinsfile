@@ -15,7 +15,7 @@ pipeline {
                 script {
                     docker.image('inner-php-image:latest').inside {
                         sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
-                        sh 'composer require --dev phpunit/phpunit'
+                        // sh 'composer require --dev phpunit/phpunit'
                         // sh 'composer install'
                     }
                 }
