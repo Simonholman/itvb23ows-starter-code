@@ -26,4 +26,3 @@ pipeline {
 
     //     // Voeg meer stappen toe voor deployment, afhankelijk van je behoeften
     // }
-}
