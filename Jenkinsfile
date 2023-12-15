@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh "docker-compose -f docker-compose-jenkins.yml build"
-                sh "docker-compose -f docker-compose-jenkins.yml up"
+                sh "docker-compose -f docker-compose-jenkins.yml up -d"
                 sh "docker-compose -f docker-compose-jenkins.yml run php-app-jenkins sh -c 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'"
             }
         }
