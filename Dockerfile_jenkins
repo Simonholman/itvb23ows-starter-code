@@ -1,7 +1,8 @@
 FROM jenkins/jenkins:lts
 
-# Kopieer de applicatiebestanden naar de container
+USER root
+RUN apt-get update && apt-get install -y docker.io docker-compose
+
 COPY . /
 
-# Stel de werkmap in voor PHP
 WORKDIR /
