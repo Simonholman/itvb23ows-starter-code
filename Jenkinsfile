@@ -17,11 +17,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                docker.image('inner-php-image:latest').inside {
+                script {
+                    docker.image('inner-php-image:latest').inside {
                         sh 'composer require --dev phpunit/phpunit'
                         sh 'composer install'
                         sh './UnitTest.php'
                     }
+                }
             }
         }
     }
