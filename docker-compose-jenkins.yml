@@ -10,7 +10,7 @@ services:
     networks:
       - app-network
     ports:
-      - "8000:8000"
+      - "8001:8000"
     command: ["php", "-S", "0.0.0.0:8000"]
 
   mysql-db:
@@ -20,23 +20,11 @@ services:
       MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE: hive
     ports: 
-      - "33006:3306"
+      - "33007:3306"
     networks:
       - app-network
     volumes:
       - ./hive.sql:/docker-entrypoint-initdb.d/hive.sql
-    
-  jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile_jenkins
-    privileged: 'true'
-    ports:
-      - 8080:8080
-    networks:
-      - app-network
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   app-network:
