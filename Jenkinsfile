@@ -15,7 +15,7 @@ pipeline {
                 script {
                     docker.image('inner-php-image:latest').inside {
                         sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
-                        sh 'curl -sSL https://git.io/install-git | sudo bash -'
+                        sh 'curl -sSL https://git.io/install-git | bash -'
                         sh 'composer require --dev phpunit/phpunit'
                         sh 'composer install'
                     }
