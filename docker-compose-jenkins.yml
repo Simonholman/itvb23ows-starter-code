@@ -1,20 +1,20 @@
 version: '3'
 
 services:
-  php-app:
+  php-app-jenkins:
     build:
       context: .
       dockerfile: Dockerfile_php
     image: inner-php-image:latest
     depends_on:
-      - mysql-db
+      - mysql-db-jenkins
     networks:
       - app-network
     ports:
       - "8001:8000"
     command: ["php", "-S", "0.0.0.0:8000"]
 
-  mysql-db:
+  mysql-db-jenkins:
     image: mysql:5.7
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
