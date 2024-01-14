@@ -4,7 +4,7 @@ services:
   php-app:
     build:
       context: .
-      dockerfile: Dockerfile_php
+      dockerfile: Dockerfile
     depends_on:
       - mysql-db
     networks:
