@@ -27,16 +27,11 @@ services:
       - ./hive.sql:/docker-entrypoint-initdb.d/hive.sql
     
   jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile_jenkins
-    privileged: 'true'
+    image: jenkins/jenkins:lts
     ports:
       - 8080:8080
     networks:
       - app-network
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   app-network:

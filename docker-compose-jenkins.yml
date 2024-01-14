@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile_php
     image: inner-php-image:latest
+    privileged: true
     depends_on:
       - mysql-db-jenkins
     networks:
