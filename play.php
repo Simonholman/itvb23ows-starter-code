@@ -3,6 +3,7 @@
 session_start();
 
 use util;
+use database;
 
 $piece = $_POST['piece'];
 $to = $_POST['to'];
@@ -29,7 +30,7 @@ elseif (array_sum($hand) <= 8 && $hand['Q']) {
     $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];
     $_SESSION['hand'][$player][$piece]--;
     $_SESSION['player'] = 1 - $_SESSION['player'];
-    $db = include_once 'database.php';
+    $db = getDatabase();
     $stmt = $db->prepare(
         'insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)'
     );

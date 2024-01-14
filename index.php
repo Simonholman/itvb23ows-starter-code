@@ -1,7 +1,6 @@
 <?php
     session_start();
 
-    #include_once 'util.php';
     use util;
 
     if (!isset($_SESSION['board'])) {
@@ -134,7 +133,7 @@
             Turn: <?php if ($player == 0) {
                 echo "White";
             } else {
-                echo "Black"; 
+                echo "Black";
             } ?>
         </div>
         <form method="post" action="play.php">
@@ -178,12 +177,13 @@
             <input type="submit" value="Restart">
         </form>
         <strong><?php if (isset($_SESSION['error'])) {
-            echo $_SESSION['error']; 
+            echo $_SESSION['error'];
             unset($_SESSION['error']);
         } ?></strong>
         <ol>
             <?php
-                $db = include_once 'database.php';
+                use database;
+                $db = getDatabase();
                 $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = '.$_SESSION['game_id']);
                 $stmt->execute();
                 $result = $stmt->get_result();

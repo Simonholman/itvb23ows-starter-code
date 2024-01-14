@@ -2,7 +2,9 @@
 
 session_start();
 
-$db = include_once 'database.php';
+use database;
+
+$db = getDatabase();
 $stmt = $db->prepare(
     'insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "pass", null, null, ?, ?)'
 );

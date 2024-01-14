@@ -3,6 +3,7 @@
 session_start();
 
 use util;
+use database;
 
 $from = $_POST['from'];
 $to = $_POST['to'];
@@ -72,7 +73,8 @@ else {
             $board[$to] = [$tile];
         }
         $_SESSION['player'] = 1 - $_SESSION['player'];
-        $db = include_once 'database.php';
+
+        $db = getDatabase();
         $stmt = $db->prepare(
             'insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)'
         );

@@ -2,7 +2,9 @@
 
 session_start();
 
-$db = include_once 'database.php';
+use database;
+
+$db = getDatabase();
 $stmt = $db->prepare('SELECT * FROM moves WHERE id = '.$_SESSION['last_move']);
 $stmt->execute();
 $result = $stmt->get_result()->fetch_array();
