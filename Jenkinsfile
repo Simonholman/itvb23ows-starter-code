@@ -8,9 +8,12 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('sonarqube') {
             steps {
-                sh "echo \"yee\""
+                script { scannerHome = tool 'sonarqube' }
+                withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=sonarqubetes1"
+                }
             }
         }
     }
