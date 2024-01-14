@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script { scannerHome = tool 'sonarqube' }
                 withSonarQubeEnv('sonarqube') {
-                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=sonarqubetes1"
+                    sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
