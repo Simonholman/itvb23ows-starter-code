@@ -13,10 +13,5 @@ pipeline {
                 sh "echo \"yee\""
             }
         }
-
-        stage('Test') {
-            steps {
-            }
-        }
     }
 }
