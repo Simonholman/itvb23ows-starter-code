@@ -16,8 +16,7 @@ services:
   mysql-db:
     image: mysql:5.7
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_ROOT_PASSWORD: very-secret-password
       MYSQL_DATABASE: hive
     ports: 
       - "33006:3306"
