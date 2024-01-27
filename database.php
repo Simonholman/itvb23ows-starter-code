@@ -1,5 +1,5 @@
 <?php
-namespace database;
+require_once 'database.php';
 
 function getState() {
     return serialize([$_SESSION['hand'], $_SESSION['board'], $_SESSION['player']]);
