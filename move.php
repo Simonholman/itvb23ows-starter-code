@@ -1,7 +1,7 @@
 <?php
 namespace move;
-require_once 'util.php';
-require_once 'database.php';
+include_once 'util.php';
+include_once 'database.php';
 session_start();
 
 $from = $_POST['from'];

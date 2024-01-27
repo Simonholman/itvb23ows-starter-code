@@ -1,6 +1,6 @@
 <?php
 namespace pass;
-require_once 'database.php';
+include_once 'database.php';
 session_start();
 
 $db = \database\getDatabase();
