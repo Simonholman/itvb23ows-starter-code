@@ -1,4 +1,5 @@
 <?php
+namespace database;
 
 function getState() {
     return serialize([$_SESSION['hand'], $_SESSION['board'], $_SESSION['player']]);
@@ -12,5 +13,5 @@ function setState($state) {
 }
 
 function getDatabase() {
-    return new mysqli('mysql-db', 'root', 'very-secret-password7849357893487953', 'hive');
+    return new \mysqli('mysql-db', 'root', 'very-secret-password7849357893487953', 'hive');
 }

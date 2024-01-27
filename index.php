@@ -1,7 +1,8 @@
 <?php
+    namespace index;
+    require_once 'util.php';
+    require_once 'database.php';
     session_start();
-
-    use util;
 
     if (!isset($_SESSION['board'])) {
         header('Location: restart.php');
@@ -183,7 +184,7 @@
         <ol>
             <?php
                 use database;
-                $db = getDatabase();
+                $db = \database\getDatabase();
                 $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = '.$_SESSION['game_id']);
                 $stmt->execute();
                 $result = $stmt->get_result();

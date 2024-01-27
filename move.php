@@ -1,9 +1,8 @@
 <?php
-
+namespace move;
+require_once 'util.php';
+require_once 'database.php';
 session_start();
-
-use util;
-use database;
 
 $from = $_POST['from'];
 $to = $_POST['to'];
@@ -24,7 +23,7 @@ elseif ($hand['Q']) {
 }
 else {
     $tile = array_pop($board[$from]);
-    if (!hasNeighBour($to, $board)) {
+    if (!\util\hasNeighBour($to, $board)) {
         $_SESSION['error'] = "Move would split hive";
     }
     else {
@@ -52,7 +51,7 @@ else {
                 $_SESSION['error'] = 'Tile not empty';
             }
             elseif ($tile[1] == "Q" || $tile[1] == "B") {
-                if (!slide($board, $from, $to)) {
+                if (!\util\slide($board, $from, $to)) {
                     $_SESSION['error'] = 'Tile must slide';
                 }
             }
@@ -74,11 +73,11 @@ else {
         }
         $_SESSION['player'] = 1 - $_SESSION['player'];
 
-        $db = getDatabase();
+        $db = \database\getDatabase();
         $stmt = $db->prepare(
             'insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)'
         );
-        $stmt->bind_param('issis', $_SESSION['game_id'], $from, $to, $_SESSION['last_move'], getState());
+        $stmt->bind_param('issis', $_SESSION['game_id'], $from, $to, $_SESSION['last_move'], \database\getState());
         $stmt->execute();
         $_SESSION['last_move'] = $db->insert_id;
     }

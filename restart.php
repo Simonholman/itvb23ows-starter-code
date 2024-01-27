@@ -1,8 +1,8 @@
 <?php
+namespace restart;
+require_once 'database.php';
 
 session_start();
-
-use database;
 
 $_SESSION['board'] = [];
 $_SESSION['hand'] = [
@@ -11,7 +11,7 @@ $_SESSION['hand'] = [
 ];
 $_SESSION['player'] = 0;
 
-$db = getDatabase();
+$db = \database\getDatabase();
 $db->prepare('INSERT INTO games VALUES ()')->execute();
 $_SESSION['game_id'] = $db->insert_id;
 
