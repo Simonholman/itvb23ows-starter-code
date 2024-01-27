@@ -1,7 +1,7 @@
 <?php
 namespace play;
-include_once 'util.php';
-include_once 'database.php';
+use \util;
+use \database;
 session_start();
 
 $piece = $_POST['piece'];

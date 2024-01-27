@@ -1,6 +1,6 @@
 <?php
 namespace restart;
-include_once 'database.php';
+use \database;
 
 session_start();
 

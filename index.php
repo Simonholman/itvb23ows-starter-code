@@ -1,7 +1,7 @@
 <?php
     namespace index;
-    include_once 'util.php';
-    include_once 'database.php';
+    use \util;
+    use \database;
     session_start();
 
     if (!isset($_SESSION['board'])) {
@@ -183,7 +183,6 @@
         } ?></strong>
         <ol>
             <?php
-                use database;
                 $db = \database\getDatabase();
                 $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = '.$_SESSION['game_id']);
                 $stmt->execute();

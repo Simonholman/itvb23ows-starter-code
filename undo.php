@@ -1,6 +1,6 @@
 <?php
 namespace undo;
-include_once 'database.php';
+use \database;
 
 session_start();
 
