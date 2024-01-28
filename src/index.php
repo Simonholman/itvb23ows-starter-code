@@ -87,7 +87,7 @@
             echo json_encode($board) . "<br>";
             echo json_encode($player) . "<br>";
             echo json_encode($hand) . "<br>";
-            echo $_SESSION['debug'];
+            echo json_encode($_SESSION['debug']);
             unset($_SESSION['debug']);
             echo '</p>';
         ?>

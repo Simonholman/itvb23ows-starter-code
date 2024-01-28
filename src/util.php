@@ -56,7 +56,7 @@ function slide($board, $from, $to) {
 }
 
 function isInvalidPlay($player, $board, $hand, $to, $piece=false) {
-    $invalid = isset($board[$to]) ||
+    $invalid = !empty($board[$to]) ||
         count($board) && !hasNeighBour($to, $board) ||
         array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board);
     if (!$invalid && $piece) $invalid = array_sum($hand) <= 8 && $hand['Q'] && $piece != 'Q';
@@ -88,7 +88,7 @@ function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
             if ($from == $to) {
                 return true;
             }
-            elseif (isset($board[$to]) && $tile[1] != "B") {
+            elseif (!empty($board[$to]) && $tile[1] != "B") {
                 return true;
             }
             elseif ($tile[1] != "Q" && $tile[1] != "B") {
@@ -102,7 +102,7 @@ function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
 }
 
 function isImpossibleMove($player, $board, $hand, $from) {
-    return !isset($board[$from]) ||
+    return empty($board[$from]) ||
         $board[$from][count($board[$from])-1][0] != $player ||
         $hand['Q'];
 }
