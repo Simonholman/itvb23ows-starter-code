@@ -46,7 +46,7 @@ function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
             elseif (isset($board[$to]) && $tile[1] != "B") {
                 return true;
             }
-            elseif ($tile[1] == "Q" || $tile[1] == "B") {
+            elseif ($tile[1] != "Q" && $tile[1] != "B") {
                 if (!slide($board, $from, $to)) {
                     return true;
                 }
@@ -57,7 +57,7 @@ function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
 }
 
 if (isImpossibleMove($player, $board, $hand, $from)) {
-    $_SESSION['error'] = 'Invalid move';
+    $_SESSION['error'] = 'Impossible move';
 }
 else {
     $tile = array_pop($board[$from]);
