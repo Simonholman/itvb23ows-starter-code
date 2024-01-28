@@ -1,7 +1,7 @@
 <?php
 namespace move;
-use \util;
-use \database;
+require_once 'util.php';
+require_once 'database.php';
 session_start();
 
 $from = $_POST['from'];
@@ -12,19 +12,15 @@ $board = $_SESSION['board'];
 $hand = $_SESSION['hand'][$player];
 unset($_SESSION['error']);
 
-if (!isset($board[$from])) {
-    $_SESSION['error'] = 'Board position is empty';
+function isImpossibleMove($player, $board, $hand, $from) {
+    return !isset($board[$from]) ||
+        $board[$from][count($board[$from])-1][0] != $player ||
+        $hand['Q'];
 }
-elseif ($board[$from][count($board[$from])-1][0] != $player) {
-    $_SESSION['error'] = "Tile is not owned by player";
-}
-elseif ($hand['Q']) {
-    $_SESSION['error'] = "Queen bee is not played";
-}
-else {
-    $tile = array_pop($board[$from]);
-    if (!\util\hasNeighBour($to, $board)) {
-        $_SESSION['error'] = "Move would split hive";
+
+function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
+    if (!hasNeighBour($to, $board)) {
+        return true;
     }
     else {
         $all = array_keys($board);
@@ -42,22 +38,32 @@ else {
             }
         }
         if ($all) {
-            $_SESSION['error'] = "Move would split hive";
+            return true;
         } else {
             if ($from == $to) {
-                $_SESSION['error'] = 'Tile must move';
+                return true;
             }
             elseif (isset($board[$to]) && $tile[1] != "B") {
-                $_SESSION['error'] = 'Tile not empty';
+                return true;
             }
             elseif ($tile[1] == "Q" || $tile[1] == "B") {
-                if (!\util\slide($board, $from, $to)) {
-                    $_SESSION['error'] = 'Tile must slide';
+                if (!slide($board, $from, $to)) {
+                    return true;
                 }
             }
         }
     }
-    if (isset($_SESSION['error'])) {
+    return false;
+}
+
+if (isImpossibleMove($player, $board, $hand, $from)) {
+    $_SESSION['error'] = 'Invalid move';
+}
+else {
+    $tile = array_pop($board[$from]);
+    $invalid = isInvalidMove($player, $board, $hand, $from, $to, $tile);
+    if ($invalid) {
+        $_SESSION['error'] = 'Invalid move';
         if (isset($board[$from])) {
             array_push($board[$from], $tile);
         }
@@ -73,11 +79,11 @@ else {
         }
         $_SESSION['player'] = 1 - $_SESSION['player'];
 
-        $db = \database\getDatabase();
+        $db = getDatabase();
         $stmt = $db->prepare(
             'insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "move", ?, ?, ?, ?)'
         );
-        $stmt->bind_param('issis', $_SESSION['game_id'], $from, $to, $_SESSION['last_move'], \database\getState());
+        $stmt->bind_param('issis', $_SESSION['game_id'], $from, $to, $_SESSION['last_move'], getState());
         $stmt->execute();
         $_SESSION['last_move'] = $db->insert_id;
     }
