@@ -12,7 +12,7 @@ $hand = $_SESSION['hand'][$player];
 
 function canPlay($player, $board, $hand, $piece, $to) {
     return !(!$hand[$piece] ||
-        isInvalidPlay($player, $board, $hand, $to));
+        isInvalidPlay($player, $board, $hand, $to, $piece));
 }
 
 if (!canPlay($player, $board, $hand, $piece, $to)) {

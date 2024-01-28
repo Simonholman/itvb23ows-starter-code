@@ -55,9 +55,54 @@ function slide($board, $from, $to) {
     return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
 }
 
-function isInvalidPlay($player, $board, $hand, $to) {
-    return isset($board[$to]) ||
+function isInvalidPlay($player, $board, $hand, $to, $piece=false) {
+    $invalid = isset($board[$to]) ||
         count($board) && !hasNeighBour($to, $board) ||
-        array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board) ||
-        array_sum($hand) <= 8 && $hand['Q'];
+        array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board);
+    if (!$invalid && $piece) $invalid = array_sum($hand) <= 8 && $hand['Q'] && $piece != 'Q';
+    return $invalid;
+}
+
+function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
+    if (!hasNeighBour($to, $board)) {
+        return true;
+    }
+    else {
+        $all = array_keys($board);
+        $queue = [array_shift($all)];
+        while ($queue) {
+            $next = explode(',', array_shift($queue));
+            foreach ($GLOBALS['OFFSETS'] as $pq) {
+                list($p, $q) = $pq;
+                $p += $next[0];
+                $q += $next[1];
+                if (in_array("$p,$q", $all)) {
+                    $queue[] = "$p,$q";
+                    $all = array_diff($all, ["$p,$q"]);
+                }
+            }
+        }
+        if ($all) {
+            return true;
+        } else {
+            if ($from == $to) {
+                return true;
+            }
+            elseif (isset($board[$to]) && $tile[1] != "B") {
+                return true;
+            }
+            elseif ($tile[1] != "Q" && $tile[1] != "B") {
+                if (!slide($board, $from, $to)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+function isImpossibleMove($player, $board, $hand, $from) {
+    return !isset($board[$from]) ||
+        $board[$from][count($board[$from])-1][0] != $player ||
+        $hand['Q'];
 }

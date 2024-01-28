@@ -12,50 +12,6 @@ $board = $_SESSION['board'];
 $hand = $_SESSION['hand'][$player];
 unset($_SESSION['error']);
 
-function isImpossibleMove($player, $board, $hand, $from) {
-    return !isset($board[$from]) ||
-        $board[$from][count($board[$from])-1][0] != $player ||
-        $hand['Q'];
-}
-
-function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
-    if (!hasNeighBour($to, $board)) {
-        return true;
-    }
-    else {
-        $all = array_keys($board);
-        $queue = [array_shift($all)];
-        while ($queue) {
-            $next = explode(',', array_shift($queue));
-            foreach ($GLOBALS['OFFSETS'] as $pq) {
-                list($p, $q) = $pq;
-                $p += $next[0];
-                $q += $next[1];
-                if (in_array("$p,$q", $all)) {
-                    $queue[] = "$p,$q";
-                    $all = array_diff($all, ["$p,$q"]);
-                }
-            }
-        }
-        if ($all) {
-            return true;
-        } else {
-            if ($from == $to) {
-                return true;
-            }
-            elseif (isset($board[$to]) && $tile[1] != "B") {
-                return true;
-            }
-            elseif ($tile[1] != "Q" && $tile[1] != "B") {
-                if (!slide($board, $from, $to)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
 if (isImpossibleMove($player, $board, $hand, $from)) {
     $_SESSION['error'] = 'Impossible move';
 }
