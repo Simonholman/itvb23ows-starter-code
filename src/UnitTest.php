@@ -44,4 +44,13 @@ class UnitTest extends TestCase
         $this->assertTrue(isInvalidPlay($player, $board, $hand[$player], $to, "A"));
         $this->assertTrue(isInvalidPlay($player, $board, $hand[$player], $to, "G"));
     }
+
+    public function testMoveToUsedTiles() {
+        $board = ["0,0"=>[],"0,1"=>[[1,"Q"],[1,"B"]],"0,-1"=>[[0,"B"]],"0,2"=>[],"0,-2"=>[[0,"B"]],"0,3"=>[[1,"B"]],"0,4"=>[[0,"Q"]]];
+        $player = 1;
+        $hand = [["Q"=>0,"B"=>0,"S"=>2,"A"=>3,"G"=>3],["Q"=>0,"B"=>0,"S"=>2,"A"=>3,"G"=>3]];
+        $to = "0,2";
+
+        $this->assertFalse(isInvalidPlay($player, $board, $hand[$player], $to, 'S'));
+    }
 }
