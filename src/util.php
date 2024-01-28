@@ -54,3 +54,10 @@ function slide($board, $from, $to) {
     }
     return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
 }
+
+function isInvalidPlay($player, $board, $hand, $to) {
+    return isset($board[$to]) ||
+        count($board) && !hasNeighBour($to, $board) ||
+        array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board) ||
+        array_sum($hand) <= 8 && $hand['Q'];
+}

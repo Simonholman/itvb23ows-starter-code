@@ -12,10 +12,7 @@ $hand = $_SESSION['hand'][$player];
 
 function canPlay($player, $board, $hand, $piece, $to) {
     return !(!$hand[$piece] ||
-        isset($board[$to]) ||
-        count($board) && !hasNeighBour($to, $board) ||
-        array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board) ||
-        array_sum($hand) <= 8 && $hand['Q']);
+        isInvalidPlay($player, $board, $hand, $to));
 }
 
 if (!canPlay($player, $board, $hand, $piece, $to)) {

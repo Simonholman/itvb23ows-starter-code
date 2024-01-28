@@ -73,9 +73,22 @@
                 border-color: red;
                 padding: 0;
             }
+
+            .debug {
+                color: black;
+                position: absolute;
+                top: 600px;
+            }
         </style>
     </head>
     <body>
+        <?php
+            echo '<p class="debug">';
+            echo json_encode($board) . "<br>";
+            echo json_encode($player) . "<br>";
+            echo json_encode($hand) . "<br>";
+            echo '</p>';
+        ?>
         <div class="board">
             <?php
                 $min_p = 1000;
@@ -140,6 +153,7 @@
             <select name="piece">
                 <?php
                     foreach ($hand[$player] as $tile => $ct) {
+                        if ($ct == 0) continue;
                         echo "<option value=\"$tile\">$tile</option>";
                     }
                 ?>
@@ -147,6 +161,7 @@
             <select name="to">
                 <?php
                     foreach ($to as $pos) {
+                        if (isInvalidPlay($player, $board, $hand[$player], $pos)) continue;
                         echo "<option value=\"$pos\">$pos</option>";
                     }
                 ?>
@@ -156,7 +171,8 @@
         <form method="post" action="move.php">
             <select name="from">
                 <?php
-                    foreach (array_keys($board) as $pos) {
+                    foreach ($board as $pos => $piece) {
+                        if ($piece[0][0] != $player) continue;
                         echo "<option value=\"$pos\">$pos</option>";
                     }
                 ?>
