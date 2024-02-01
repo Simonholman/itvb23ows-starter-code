@@ -18,14 +18,13 @@ pipeline {
         }
 
         stage('PHPUnit') {
-            agent {
-                docker {
-                    image 'composer:lts'
-                }
-            }
             steps {
-                sh 'composer install'
-                sh 'vendor/bin/phpunit src/.'
+                script {
+                    docker.image('composer:lts').inside {
+                        sh 'composer install'
+                        sh 'vendor/bin/phpunit src/.'
+                    }
+                }
             }
         }
     }
