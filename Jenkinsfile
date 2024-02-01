@@ -16,5 +16,12 @@ pipeline {
                 }
             }
         }
+
+        stage('PHPUnit') {
+            steps {
+                sh 'composer install'
+                sh 'vendor/bin/phpunit --display-warnings src'
+            }
+        }
     }
 }

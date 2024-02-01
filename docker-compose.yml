@@ -24,6 +24,16 @@ services:
       - app-network
     volumes:
       - ./hive.sql:/docker-entrypoint-initdb.d/hive.sql
+
+  hive-ai:
+    build:
+      context: ./itvb23ows-hive-ai
+      dockerfile: Dockerfile
+    ports: 
+      - "5000:5000"
+    networks:
+      - app-network
+    command: ['flask', '--app', 'app', 'run', '-h', '0.0.0.0', '--debug']
     
   jenkins:
     image: jenkins/jenkins:lts
@@ -33,7 +43,7 @@ services:
       - app-network
     depends_on:
       - sonarqube
-
+      
   sonarqube:
       image: sonarqube:latest
       container_name: sonarqube
