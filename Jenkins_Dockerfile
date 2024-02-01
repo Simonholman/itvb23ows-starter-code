@@ -8,4 +8,9 @@ RUN apt install -y php
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
-WORKDIR /src
+COPY . /app
+WORKDIR /app
+
+RUN composer install
+
+USER jenkins
