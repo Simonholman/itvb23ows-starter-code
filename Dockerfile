@@ -5,4 +5,4 @@ RUN docker-php-ext-enable mysqli
 
 COPY src /
 
-WORKDIR / 
+WORKDIR /
