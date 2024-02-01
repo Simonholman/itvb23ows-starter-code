@@ -17,7 +17,7 @@ if (isImpossibleMove($player, $board, $hand, $from)) {
 }
 else {
     $tile = array_pop($board[$from]);
-    $invalid = isInvalidMove($player, $board, $hand, $from, $to, $tile);
+    $invalid = isInvalidMove($player, $board, $from, $to, $tile);
     if ($invalid) {
         $_SESSION['error'] = 'Invalid move';
         if (isset($board[$from])) {

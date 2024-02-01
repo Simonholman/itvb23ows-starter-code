@@ -26,8 +26,10 @@ class UnitTest extends TestCase
         $hand = [["Q"=>0,"B"=>2,"S"=>2,"A"=>3,"G"=>3],["Q"=>0,"B"=>2,"S"=>2,"A"=>3,"G"=>3]];
         $from = "0,0";
         $to = "0,1";
-        $tile = array_pop($board[$from]);
+        $tile = $board[$from][len($board[$from])-1];
 
+        $hiveCounter = new HiveCounter($board);
+        $this->assertTrue($hiveCounter->isOneHive($tile, $to));
         $this->assertFalse(isInvalidMove($player, $board, $hand[$player], $from, $to, $tile));
     }
 
@@ -52,5 +54,23 @@ class UnitTest extends TestCase
         $to = "0,2";
 
         $this->assertFalse(isInvalidPlay($player, $board, $hand[$player], $to, 'S'));
+    }
+
+    public function testIsOneHive() {
+        $board = [
+            "0,0" => [[0,"Q"],[0,"B"]],
+            "0,1" => [[1,"Q"]],
+            "0,-1" => [],
+            "0,2" => [[1,"B"]],
+            "0,-2" => [[0,"B"]],
+            "0,3" => [[1,"B"]],
+            "0,-3" => [[0,"S"]],
+            "0,4" => [[1,"S"]],
+        ];
+        $from = "0,1";
+        $to = "0,0";
+
+        $hiveCounter = new HiveCounter($board);
+        $this->assertFalse($hiveCounter->isOneHive($from, $to));
     }
 }

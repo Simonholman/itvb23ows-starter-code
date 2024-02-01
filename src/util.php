@@ -36,25 +36,6 @@ function len($tile) {
     return $tile ? count($tile) : 0;
 }
 
-function slide($board, $from, $to) {
-    if (!hasNeighBour($to, $board) || !isNeighbour($from, $to)) {
-        return false;
-    }
-    $b = explode(',', $to);
-    $common = [];
-    foreach ($GLOBALS['OFFSETS'] as $pq) {
-        $p = $b[0] + $pq[0];
-        $q = $b[1] + $pq[1];
-        if (isNeighbour($from, $p.",".$q)) {
-            $common[] = $p.",".$q;
-        }
-    }
-    if (!$board[$common[0]] && !$board[$common[1]] && !$board[$from] && !$board[$to]) {
-        return false;
-    }
-    return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
-}
-
 function isInvalidPlay($player, $board, $hand, $to, $piece=false) {
     $invalid = !empty($board[$to]) ||
         count($board) && !hasNeighBour($to, $board) ||
@@ -63,26 +44,13 @@ function isInvalidPlay($player, $board, $hand, $to, $piece=false) {
     return $invalid;
 }
 
-function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
+function isInvalidMove($player, $board, $from, $to, $tile) {
     if (!hasNeighBour($to, $board)) {
         return true;
     }
     else {
-        $all = array_keys($board);
-        $queue = [array_shift($all)];
-        while ($queue) {
-            $next = explode(',', array_shift($queue));
-            foreach ($GLOBALS['OFFSETS'] as $pq) {
-                list($p, $q) = $pq;
-                $p += $next[0];
-                $q += $next[1];
-                if (in_array("$p,$q", $all)) {
-                    $queue[] = "$p,$q";
-                    $all = array_diff($all, ["$p,$q"]);
-                }
-            }
-        }
-        if ($all) {
+        $hiveCounter = new HiveCounter($board);
+        if (!$hiveCounter->isOneHive($tile, $to)) {
             return true;
         } else {
             if ($from == $to) {
@@ -91,18 +59,82 @@ function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
             elseif (!empty($board[$to]) && $tile[1] != "B") {
                 return true;
             }
-            elseif ($tile[1] != "Q" && $tile[1] != "B") {
-                if (!slide($board, $from, $to)) {
-                    return true;
-                }
+            elseif ($tile[1] == "G") {
+                return !grasshopper($from, $to, $board);
             }
+            elseif ($tile[1] == "A") {
+                return true;
+            }
+            elseif ($tile[1] == "S") {
+                return true;
+            }
+            return !isNeighbour($from, $to);
         }
     }
-    return false;
 }
 
 function isImpossibleMove($player, $board, $hand, $from) {
     return empty($board[$from]) ||
         $board[$from][count($board[$from])-1][0] != $player ||
         $hand['Q'];
+}
+
+function grasshopper($from, $to, $board) {
+    return true;
+}
+
+class HiveCounter {
+
+    private $checked = [];
+    private $tiles = [];
+    private $board = [];
+
+    public function __construct($board) {
+        $this->board = $board;
+    }
+
+    private function getNeighbours($tile) {
+        $neighbours = [];
+        list($x, $y) = explode(',', $tile);
+        
+        foreach ($GLOBALS['OFFSETS'] as $offset) {
+            $neighbours[] = ($x + $offset[0]) . ',' . ($y + $offset[1]);
+        }
+    
+        return $neighbours;
+    }
+    
+    public function isOneHive($tile, $to) {
+        $boardCopy = json_decode(json_encode($this->board), true);
+    
+        if (isset($boardCopy[$to])) {
+            array_push($boardCopy[$to], $tile);
+        } else {
+            $boardCopy[$to] = [$tile];
+        }
+    
+        $totalCount = count(array_filter($boardCopy, function ($tiles) {
+            return !empty($tiles);
+        }));
+        $checked = [];
+    
+        $hiveTiles = [];
+        foreach ($boardCopy as $pos => $tiles) {
+            if (!empty($tiles)) $hiveTiles[] = $pos;
+        }
+    
+        $hiveSize = $this->getHiveSize(array_keys($boardCopy)[0], 1, $checked, $hiveTiles);
+        return $hiveSize == $totalCount;
+    }
+    
+    private function getHiveSize($tile, $size) {
+        foreach ($this->getNeighbours($tile) as $neighbour) {
+            if (in_array($neighbour, $this->checked) || !in_array($neighbour, $this->tiles)) continue;
+            $_SESSION['debug'][] = $neighbour . ' -> ';
+            $checked[] = $neighbour;
+            $size += $this->getHiveSize($neighbour, $size);
+        }
+    
+        return $size + 1;
+    }
 }
