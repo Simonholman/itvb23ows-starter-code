@@ -8,6 +8,13 @@ pipeline {
             }
         }
 
+        stage('Install PHP') {
+            steps {
+                sh 'sudo apt update'
+                sh 'sudo apt install -y php'
+            }
+        }
+
         stage('Install Composer') {
             steps {
                 sh 'curl -sS https://getcomposer.org/installer | php'
