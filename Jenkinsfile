@@ -18,9 +18,14 @@ pipeline {
         }
 
         stage('PHPUnit') {
+            agent {
+                docker {
+                    image 'composer:lts'
+                }
+            }
             steps {
                 sh 'composer install'
-                sh 'vendor/bin/phpunit --display-warnings src'
+                sh 'vendor/bin/phpunit src/.'
             }
         }
     }

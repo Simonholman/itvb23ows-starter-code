@@ -36,9 +36,7 @@ services:
     command: ['flask', '--app', 'app', 'run', '-h', '0.0.0.0', '--debug']
     
   jenkins:
-    build:
-      context: .
-      dockerfile: Jenkins_Dockerfile
+    image: jenkins/jenkins:lts
     ports:
       - 8080:8080
     networks:
