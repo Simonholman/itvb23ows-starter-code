@@ -89,9 +89,7 @@ function isInvalidMove($player, $board, $from, $to, $tile) {
                 return true;
             }
             elseif (!empty($board[$to]) && $tile[1] != "B") {
-                if (!slide($board, $from, $to)) {
-                    return true;
-                }
+                return !slide($board, $from, $to);
             }
             elseif ($tile[1] == "G") {
                 return !grasshopper($from, $to, $board);
