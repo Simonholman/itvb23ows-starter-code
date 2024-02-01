@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('Clone source') {
             steps {
+                sh 'pwd'
                 checkout scm
             }
         }
