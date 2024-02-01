@@ -36,6 +36,25 @@ function len($tile) {
     return $tile ? count($tile) : 0;
 }
 
+function slide($board, $from, $to) {
+    if (!hasNeighBour($to, $board) || !isNeighbour($from, $to)) {
+        return false;
+    }
+    $b = explode(',', $to);
+    $common = [];
+    foreach ($GLOBALS['OFFSETS'] as $pq) {
+        $p = $b[0] + $pq[0];
+        $q = $b[1] + $pq[1];
+        if (isNeighbour($from, $p.",".$q)) {
+            $common[] = $p.",".$q;
+        }
+    }
+    if (!$board[$common[0]] && !$board[$common[1]] && !$board[$from] && !$board[$to]) {
+        return false;
+    }
+    return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
+}
+
 function isInvalidPlay($player, $board, $hand, $to, $piece=false) {
     $invalid = !empty($board[$to]) ||
         count($board) && !hasNeighBour($to, $board) ||
@@ -70,7 +89,9 @@ function isInvalidMove($player, $board, $from, $to, $tile) {
                 return true;
             }
             elseif (!empty($board[$to]) && $tile[1] != "B") {
-                return true;
+                if (!slide($board, $from, $to)) {
+                    return true;
+                }
             }
             elseif ($tile[1] == "G") {
                 return !grasshopper($from, $to, $board);
