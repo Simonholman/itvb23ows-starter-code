@@ -142,10 +142,10 @@ function canPass($player, $board, $hand) {
             }
             $tile = array_pop($board[$from]);
             if (!isInvalidMove($player, $board, $from, $to, $tile)) {
-                $board[$from] = $tile;
+                array_push($board[$from], $tile);
                 return false;
             }
-            $board[$from] = $tile;
+            array_push($board[$from], $tile);
         }
     }
 
@@ -171,4 +171,45 @@ function grasshopper($from, $to, $board) {
     }
 
     return false;
+}
+
+function getNeighbours($pos)
+{
+    $neighbours = [];
+    list($x, $y) = explode(',', $pos);
+    
+    foreach ($GLOBALS['OFFSETS'] as $offset) {
+        $neighbours[] = ($x + $offset[0]) . ',' . ($y + $offset[1]);
+    }
+
+    return $neighbours;
+}
+
+function hasWon($player, $board) {
+
+    $oppQ = null;
+
+    foreach ($board as $pos => $tiles) {
+        foreach ($tiles as $tile) {
+            if ($tile[1] == 'Q' && $tile[0] == ($player == 0 ? 1 : 0)) {
+                $oppQ = $pos;
+            }
+        }
+    }
+
+    if (is_null($oppQ)) {
+        return false;
+    }
+
+    foreach (getNeighbours($oppQ) as $neighbour) {
+
+        $tile = array_pop($board[$oppQ]);
+        if (isInvalidMove($player == 0 ? 1 : 0, $board, $oppQ, $neighbour, $tile)) {
+            array_push($board[$oppQ], $tile);
+            return false;
+        }
+        array_push($board[$oppQ], $tile);
+    }
+
+    return true;
 }

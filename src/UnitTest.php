@@ -134,4 +134,58 @@ class UnitTest extends TestCase
         // e. Een sprinkhaan mag niet over lege velden springen. Dit betekent dat alle velden tussen de start- en eindpositie bezet moeten zijn.
         $this->assertTrue(isInvalidMove($player, $board, $from, "0,3", $board[$from][len($board[$from])-1]));
     }
+
+    public function testHasWon() {
+        $winBoard = [
+            '0,0' => [[0, 'Q']],
+            '1,0' => [[1, 'B']],
+            '-1,0' => [[0, 'B']],
+            '0,-1' => [[0, 'B']],
+            '0,1' => [[1, 'B']],
+            '1,1' => [[1, 'Q']],
+            '-2,1' => [[0, 'S']],
+            '-1,1' => [[1, 'A']],
+            '-2,2' => [[0, 'S']],
+            '1,-1' => [[0, 'A']]
+        ];
+
+        $noWinBoard = [
+            '0,0' => [[0, 'Q']],
+            '1,0' => [[1, 'B']],
+            '-1,0' => [[0, 'B']],
+            '0,1' => [[1, 'B']],
+            '1,1' => [[1, 'Q']],
+            '-2,1' => [[0, 'S']],
+            '-1,1' => [[1, 'A']],
+            '-2,2' => [[0, 'S']],
+            '1,-1' => [[0, 'A']]
+        ];
+
+        $drawBoard = [
+            '0,0' => [[0, 'Q']],
+            '1,0' => [[1, 'B']],
+            '-1,0' => [[0, 'B']],
+            '0,-1' => [[0, 'B']],
+            '0,1' => [[1, 'B']],
+            '1,1' => [[1, 'Q']],
+            '-2,1' => [[0, 'S']],
+            '-1,1' => [[1, 'A']],
+            '-2,2' => [[0, 'S']],
+            '1,-1' => [[0, 'A']],
+            '2,0' => [[1, 'S']],
+            '1,2' => [[1, 'S']],
+            '-1,2' => [[0, 'A']],
+            '2,1' => [[1, 'A']],
+            '0,2' => [[0, 'A']]
+        ];
+
+        $this->assertTrue(hasWon(1, $winBoard));
+        $this->assertFalse(hasWon(0, $winBoard));
+
+        $this->assertFalse(hasWon(1, $noWinBoard));
+        $this->assertFalse(hasWon(0, $noWinBoard));
+
+        $this->assertTrue(hasWon(1, $drawBoard));
+        $this->assertTrue(hasWon(0, $drawBoard));
+    }
 }
