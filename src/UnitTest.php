@@ -26,9 +26,9 @@ class UnitTest extends TestCase
         $hand = [["Q"=>0,"B"=>2,"S"=>2,"A"=>3,"G"=>3],["Q"=>0,"B"=>2,"S"=>2,"A"=>3,"G"=>3]];
         $from = "0,0";
         $to = "0,1";
-        $tile = array_pop($board[$from]);
+        $tile = $board[$from][len($board[$from])-1];
 
-        $this->assertFalse(isInvalidMove($player, $board, $hand[$player], $from, $to, $tile));
+        $this->assertFalse(isInvalidMove($player, $board, $from, $to, $tile));
     }
 
     public function testFourthMoveInvalid()
@@ -52,5 +52,41 @@ class UnitTest extends TestCase
         $to = "0,2";
 
         $this->assertFalse(isInvalidPlay($player, $board, $hand[$player], $to, 'S'));
+    }
+
+    public function testGrasshopper() {
+        $player = 0;
+        $from = "0,0";
+
+        $board = [
+            "0,0" => [[0,"G"]],
+            "0,1" => [[0,"B"]],
+            "0,2" => [[1,"Q"]],
+        ];
+
+        // d. Een sprinkhaan mag niet naar een bezet veld springen.
+        $this->assertTrue(isInvalidMove($player, $board, $from, "0,2", $board[$from][len($board[$from])-1]));
+
+        $board = [
+            "0,0" => [[0,"G"]],
+            "0,1" => [[0,"B"]],
+        ];
+
+        // b. Een sprinkhaan mag zich niet verplaatsen naar het veld waar hij al staat.
+        $this->assertTrue(isInvalidMove($player, $board, $from, "0,0", $board[$from][len($board[$from])-1]));
+        
+        // a. Een sprinkhaan verplaatst zich door in een rechte lijn een sprong te maken naar een veld meteen achter een andere steen in de richting van de sprong.
+        $this->assertFalse(isInvalidMove($player, $board, $from, "0,2", $board[$from][len($board[$from])-1]));
+
+        // c. Een sprinkhaan moet over minimaal één steen springen.
+        $this->assertTrue(isInvalidMove($player, $board, $from, "-1,0", $board[$from][len($board[$from])-1]));
+
+        $board = [
+            "0,0" => [[0,"G"]],
+            "0,2" => [[1,"Q"]],
+        ];
+
+        // e. Een sprinkhaan mag niet over lege velden springen. Dit betekent dat alle velden tussen de start- en eindpositie bezet moeten zijn.
+        $this->assertTrue(isInvalidMove($player, $board, $from, "0,3", $board[$from][len($board[$from])-1]));
     }
 }

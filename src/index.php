@@ -174,7 +174,7 @@
             <select name="from">
                 <?php
                     foreach ($board as $pos => $piece) {
-                        if ($piece[0][0] != $player) continue;
+                        if ($piece[len($piece)-1][0] != $player) continue;
                         echo "<option value=\"$pos\">$pos</option>";
                     }
                 ?>

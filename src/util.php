@@ -63,7 +63,7 @@ function isInvalidPlay($player, $board, $hand, $to, $piece=false) {
     return $invalid;
 }
 
-function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
+function isInvalidMove($player, $board, $from, $to, $tile) {
     if (!hasNeighBour($to, $board)) {
         return true;
     }
@@ -89,20 +89,45 @@ function isInvalidMove($player, $board, $hand, $from, $to, $tile) {
                 return true;
             }
             elseif (!empty($board[$to]) && $tile[1] != "B") {
+                return !slide($board, $from, $to);
+            }
+            elseif ($tile[1] == "G") {
+                return !grasshopper($from, $to, $board);
+            }
+            elseif ($tile[1] == "A") {
                 return true;
             }
-            elseif ($tile[1] != "Q" && $tile[1] != "B") {
-                if (!slide($board, $from, $to)) {
-                    return true;
-                }
+            elseif ($tile[1] == "S") {
+                return true;
             }
+            return !isNeighbour($from, $to);
         }
     }
-    return false;
 }
 
 function isImpossibleMove($player, $board, $hand, $from) {
     return empty($board[$from]) ||
         $board[$from][count($board[$from])-1][0] != $player ||
         $hand['Q'];
+}
+
+function grasshopper($from, $to, $board) {
+    if (!empty($board[$to]) || $from == $to) {
+        return false;
+    }
+
+    foreach ($GLOBALS['OFFSETS'] as $offset) {
+        list($x, $y) = explode(',', $from);
+        $jumps = 0;
+        
+        while (!empty($board["$x,$y"])) {
+            $x += $offset[0];
+            $y += $offset[1];
+            $jumps += 1;
+
+            if ($jumps > 1 && "$x,$y" == $to) return true;
+        }
+    }
+
+    return false;
 }
