@@ -25,22 +25,22 @@ services:
     volumes:
       - ./hive.sql:/docker-entrypoint-initdb.d/hive.sql
     
-  # jenkins:
-  #   image: jenkins/jenkins:lts
-  #   ports:
-  #     - 8080:8080
-  #   networks:
-  #     - app-network
-  #   depends_on:
-  #     - sonarqube
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+    depends_on:
+      - sonarqube
 
-  # sonarqube:
-  #     image: sonarqube:latest
-  #     container_name: sonarqube
-  #     ports:
-  #       - "9000:9000"
-  #     networks:
-  #       - app-network
+  sonarqube:
+      image: sonarqube:latest
+      container_name: sonarqube
+      ports:
+        - "9000:9000"
+      networks:
+        - app-network
 
 networks:
   app-network:
