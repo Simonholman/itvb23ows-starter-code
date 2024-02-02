@@ -125,12 +125,20 @@ function getTo($board) {
 
 function canPass($player, $board, $hand) {
     foreach (getTo($board) as $from) {
+
+        foreach ($hand[$player] as $piece => $count) {
+            if ($count > 0 && !isInvalidPlay($player, $board, $hand, $to, $piece)) {
+                return false;
+            }
+        }
+
         foreach (getTo($board) as $to) {
+            if (isImpossibleMove($player, $board, $hand, $from)) {
+                continue;
+            }
             $tile = array_pop($board[$from]);
-            if (
-                !isImpossibleMove($player, $board, $hand, $from) && 
-                !isInvalidMove($player, $board, $hand, $from, $to, $tile)
-            ) {
+            if (!isInvalidMove($player, $board, $hand, $from, $to, $tile)) {
+                $board[$from] = $tile;
                 return false;
             }
             $board[$from] = $tile;

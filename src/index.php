@@ -180,7 +180,7 @@
         </form>
         <form method="post" action="pass.php">
             <?php 
-                if (canPass($player, $board)) {
+                if (canPass($player, $board, $hand)) {
                     echo "<input type=\"submit\" value=\"Pass\">";
                 }
             ?>
