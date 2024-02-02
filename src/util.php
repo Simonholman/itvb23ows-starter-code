@@ -111,6 +111,47 @@ function isImpossibleMove($player, $board, $hand, $from) {
         $hand['Q'];
 }
 
+function getTo($board) {
+    $to = [];
+    foreach ($GLOBALS['OFFSETS'] as $pq) {
+        foreach (array_keys($board) as $pos) {
+            $pq2 = explode(',', $pos);
+            $to[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+        }
+    }
+    $to = array_unique($to);
+    if (!count($to)) {
+        $to[] = '0,0';
+    }
+
+    return $to;
+}
+
+function canPass($player, $board, $hand) {
+    foreach (getTo($board) as $from) {
+
+        foreach ($hand[$player] as $piece => $count) {
+            if ($count > 0 && !isInvalidPlay($player, $board, $hand, $to, $piece)) {
+                return false;
+            }
+        }
+
+        foreach (getTo($board) as $to) {
+            if (isImpossibleMove($player, $board, $hand, $from)) {
+                continue;
+            }
+            $tile = array_pop($board[$from]);
+            if (!isInvalidMove($player, $board, $hand, $from, $to, $tile)) {
+                $board[$from] = $tile;
+                return false;
+            }
+            $board[$from] = $tile;
+        }
+    }
+
+    return true;
+}
+
 function grasshopper($from, $to, $board) {
     if (!empty($board[$to]) || $from == $to) {
         return false;
