@@ -112,10 +112,7 @@ function isImpossibleMove($player, $board, $hand, $from) {
 }
 
 function grasshopper($from, $to, $board) {
-    if ($from == $to) {
-        return false;
-    }
-    elseif (!empty($board[$to])) {
+    if (!empty($board[$to]) || $from == $to) {
         return false;
     }
 
