@@ -63,7 +63,7 @@ class UnitTest extends TestCase
             "-1,0" => [[1, 'A']],
             "-1,1" => [[1, 'A']]
         ];
-        $hand = [0 => [], 1=>[]];
+        $hand = [[],[]];
         $player = 0;
 
         $this->assertTrue(canPass($player, $board, $hand));
@@ -76,8 +76,8 @@ class UnitTest extends TestCase
             "-1,1" => [[1, 'A']]
         ];
         $hand = [
-            0 => ["Q" => 0,"B" => 0, "S" => 0, "A" => 0, "G" => 0],
-            1 => ["Q" => 0, "B" => 0, "S" => 0, "A" => 0, "G" => 0]
+            ["Q" => 0,"B" => 0, "S" => 0, "A" => 0, "G" => 0],
+            ["Q" => 0, "B" => 0, "S" => 0, "A" => 0, "G" => 0]
         ];
         $player = 0;
 
@@ -91,8 +91,8 @@ class UnitTest extends TestCase
             "-1,1" => [[1, 'A']]
         ];
         $hand = [
-            0 => ["Q" => 0,"B" => 0, "S" => 1, "A" => 0, "G" => 0],
-            1 => ["Q" => 0, "B" => 0, "S" => 0, "A" => 0, "G" => 0]
+            ["Q" => 0,"B" => 0, "S" => 1, "A" => 0, "G" => 0],
+            ["Q" => 0, "B" => 0, "S" => 0, "A" => 0, "G" => 0]
         ];
         $player = 0;
 
