@@ -11,17 +11,7 @@
     $player = $_SESSION['player'];
     $hand = $_SESSION['hand'];
 
-    $to = [];
-    foreach ($GLOBALS['OFFSETS'] as $pq) {
-        foreach (array_keys($board) as $pos) {
-            $pq2 = explode(',', $pos);
-            $to[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
-        }
-    }
-    $to = array_unique($to);
-    if (!count($to)) {
-        $to[] = '0,0';
-    }
+    $to = getTo($board);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -189,7 +179,11 @@
             <input type="submit" value="Move">
         </form>
         <form method="post" action="pass.php">
-            <input type="submit" value="Pass">
+            <?php 
+                if (canPass($player, $board)) {
+                    echo "<input type=\"submit\" value=\"Pass\">";
+                }
+            ?>
         </form>
         <form method="post" action="restart.php">
             <input type="submit" value="Restart">
